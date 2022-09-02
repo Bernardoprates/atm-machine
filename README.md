@@ -1,31 +1,39 @@
-# Read Me First
-The following was discovered as part of building this project:
+# ATM Backend Service
 
-* The original package name 'com.zinkworks.atm-machine' is invalid and this project uses 'com.zinkworks.atmmachine' instead.
+The ATM-Machine is a project that intends to simulate cash withdrawal.
+
+As a persistence solution for the customer accounts, MongoDB was the chosen technology, because of the fast integration with Spring Boot applications.
 
 # Getting Started
+In order to build and set up the project, it first must be compiled with the Maven command that should be run at the root-level:
 
-### Reference Documentation
-For further reference, please consider the following sections:
+```shell
+mvn clean install
+```
+If MongoDB is already running on your machine, with the default settings (answering at the port 27017), then it suffices either to run an application configuration on Intellij IDEA if that the IDE that you prefer, or to run the following command in a command line in the folder containing the jar.
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.3/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.3/maven-plugin/reference/html/#build-image)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/2.7.3/reference/htmlsingle/#web)
-* [Thymeleaf](https://docs.spring.io/spring-boot/docs/2.7.3/reference/htmlsingle/#web.servlet.spring-mvc.template-engines)
-* [Spring Security](https://docs.spring.io/spring-boot/docs/2.7.3/reference/htmlsingle/#web.security)
-* [Spring Configuration Processor](https://docs.spring.io/spring-boot/docs/2.7.3/reference/htmlsingle/#appendix.configuration-metadata.annotation-processor)
-* [Spring Data MongoDB](https://docs.spring.io/spring-boot/docs/2.7.3/reference/htmlsingle/#data.nosql.mongodb)
+ The Java version which was used in this project was Java 11.
 
-### Guides
-The following guides illustrate how to use some features concretely:
+```shell
+java -jar atm-machine-1.0.1.jar
+```
 
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Handling Form Submission](https://spring.io/guides/gs/handling-form-submission/)
-* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
-* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
-* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
-* [Accessing Data with MongoDB](https://spring.io/guides/gs/accessing-data-mongodb/)
+For the case where the application must be run in a docker container, to create the image the following command must be used:
+```shell
+docker build . -t  zinkworks/atm:latest
+```
+Additionally, if running the application in docker containers is required, as a consequence, a mongo container must be also coupled to the Java application container as a sidecar.
 
+To get both containers running, the command must be run at the root folder level in a command prompt or shell.
+```shell
+docker build . -t  zinkworks/atm:latest
+```
+
+
+
+
+### Topics to improve/explore in the future
+ - Fix the integration test, by tuning the configuration of the embedded mongo instance.
+ - Develop a userdetails service with encrypted passwords (at the moment the services are called with a basic Authentication of "username:password").
+ - Integrate with Thymeleaf.
+ - Incorporate an API to add accounts, refill the machine slots, ...

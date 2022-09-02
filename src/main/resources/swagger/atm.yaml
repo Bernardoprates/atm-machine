@@ -1,0 +1,124 @@
+swagger: "2.0"
+info:
+  title: ATM API
+  description: ATM Services API.
+  version: 1.0.0
+host: zinkworks.com
+schemes:
+  - https
+  - http
+basePath: /atm/v1
+paths:
+  /withdraw:
+    post:
+      summary: Cash Withdrawal.
+      description: Withdrawal of a determined sum by a user.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: authorization
+          type: string
+          in: header
+          required: true
+        - name: withdrawal
+          schema:
+            $ref: '#/definitions/WithdrawalRequest'
+          in: body
+          required: true
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/WithdrawalResponse'
+        '400':
+          description: Bad Request
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+  /balance:
+    get:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: authorization
+          type: string
+          in: header
+          required: true
+        - name: account
+          type: string
+          pattern: \d{9}
+          required: true
+          in: query
+        - name: PIN
+          type: string
+          pattern: \d{4}
+          required: true
+          in: query
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/BalanceResponse'
+        401:
+          description: UNAUTHORIZED
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: FORBIDDEN
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  WithdrawalRequest:
+    properties:
+      account:
+        type: string
+        pattern: \d{9}
+      PIN:
+        type: string
+        pattern: \d{4}
+      amount:
+        type: integer
+        minimum: 5
+  WithdrawalResponse:
+    properties:
+      account:
+        type: string
+        pattern: \d{9}
+      sumWithdrawn:
+        type: integer
+        minimum: 5
+      remainingBalance:
+        type: integer
+  BalanceRequest:
+    properties:
+      account:
+        type: string
+        pattern: \d{9}
+      PIN:
+        type: string
+        pattern: \d{4}
+  BalanceResponse:
+    properties:
+      account:
+        type: string
+        pattern: \d{9}
+      accountBalance:
+        type: integer
+  Error:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      status:
+        type: string
+

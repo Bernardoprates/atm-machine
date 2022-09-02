@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:5.0
+    restart: unless-stopped
+    ports:
+      - 27018:27017
+  atm:
+    image: zinkworks/atm:latest
+    ports:
+      - 8080:8080
+    environment:
+      - ATMDB_MONGODB_URI=mongodb://mongo:27017
+    depends_on:
+      - mongo
